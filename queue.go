@@ -50,6 +50,14 @@ func (q *Queue[K]) PopAll() []K {
 	return list
 }
 
+func (q *Queue[K]) Has(item K) bool {
+	for i := range q.data {
+		if q.data[i] == item {
+			return true
+		}
+	}
+	return false
+}
 func (q *Queue[K]) Each(f func(K)) {
 	for _, item := range q.data {
 		f(item)

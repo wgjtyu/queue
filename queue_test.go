@@ -72,6 +72,14 @@ func TestQueue_PopAll(t *testing.T) {
 	assert.Equal(t, shouldBe, all)
 }
 
+func TestQueue_Has(t *testing.T) {
+	q := NewQueue[int]()
+	assert.Equal(t, false, q.Has(5))
+
+	q.Add(9)
+	assert.Equal(t, true, q.Has(9))
+}
+
 func TestQueue_Each(t *testing.T) {
 	q := NewQueue[int]()
 	q.AddList([]int{1, 2, 3, 4, 5})
