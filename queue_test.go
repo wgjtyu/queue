@@ -72,6 +72,16 @@ func TestQueue_PopAll(t *testing.T) {
 	assert.Equal(t, shouldBe, all)
 }
 
+func TestQueue_Each(t *testing.T) {
+	q := NewQueue[int]()
+	q.AddList([]int{1, 2, 3, 4, 5})
+	sum := 0
+	q.Each(func(item int) {
+		sum = sum + item
+	})
+	assert.Equal(t, 15, sum)
+}
+
 func TestQueue_Empty(t *testing.T) {
 	q := NewQueue[bool]()
 	assert.Equal(t, true, q.Empty())

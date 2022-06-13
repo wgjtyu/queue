@@ -50,6 +50,12 @@ func (q *Queue[K]) PopAll() []K {
 	return list
 }
 
+func (q *Queue[K]) Each(f func(K)) {
+	for _, item := range q.data {
+		f(item)
+	}
+}
+
 func (q *Queue[K]) Empty() bool {
 	return len(q.data) <= 0
 }
