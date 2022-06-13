@@ -23,10 +23,33 @@ func TestQueue_Add(t *testing.T) {
 	}
 
 	all := q.PopAll()
-	assert.Equal(t, len(all), len(data), "length of queue should equal")
-	for i, n := range data {
-		assert.Equal(t, all[i], n, "item should be equal")
-	}
+	assert.Equal(t, data, all)
+}
+
+func TestQueue_Remove(t *testing.T) {
+	q := NewQueue[int]()
+	data := []int{0, 1, 2, 3, 4, 5, 3, 9, 8, 6}
+	q.AddList(data)
+
+	q.Remove(11)
+	shouldBe := []int{0, 1, 2, 3, 4, 5, 3, 9, 8, 6}
+	assert.Equal(t, shouldBe, q.data)
+
+	q.Remove(2)
+	shouldBe = []int{0, 1, 6, 3, 4, 5, 3, 9, 8}
+	assert.Equal(t, shouldBe, q.data)
+
+	q.Remove(3)
+	shouldBe = []int{0, 1, 6, 8, 4, 5, 9}
+	assert.Equal(t, shouldBe, q.data)
+
+	q.Remove(0)
+	shouldBe = []int{9, 1, 6, 8, 4, 5}
+	assert.Equal(t, shouldBe, q.data)
+
+	q.Remove(5)
+	shouldBe = []int{9, 1, 6, 8, 4}
+	assert.Equal(t, shouldBe, q.data)
 }
 
 func TestQueue_AddList(t *testing.T) {
@@ -35,10 +58,7 @@ func TestQueue_AddList(t *testing.T) {
 	q.AddList(data)
 
 	all := q.PopAll()
-	assert.Equal(t, len(all), len(data), "length of queue should equal")
-	for i, n := range data {
-		assert.Equal(t, all[i], n, "item should be equal")
-	}
+	assert.Equal(t, all, data)
 }
 
 func TestQueue_PopAll(t *testing.T) {
@@ -47,8 +67,9 @@ func TestQueue_PopAll(t *testing.T) {
 	assert.Equal(t, 0, len(all))
 
 	q.Add(true)
+	shouldBe := []bool{true}
 	all = q.PopAll()
-	assert.Equal(t, true, all[0])
+	assert.Equal(t, shouldBe, all)
 }
 
 func TestQueue_Empty(t *testing.T) {

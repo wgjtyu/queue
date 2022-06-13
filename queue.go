@@ -2,12 +2,12 @@ package queue
 
 import "sync"
 
-type Queue[K any] struct {
+type Queue[K comparable] struct {
 	data []K
 	mux  sync.Mutex
 }
 
-func NewQueue[K any]() *Queue[K] {
+func NewQueue[K comparable]() *Queue[K] {
 	return &Queue[K]{
 		data: make([]K, 0),
 	}
@@ -17,6 +17,23 @@ func (q *Queue[K]) Add(i K) {
 	q.mux.Lock()
 	defer q.mux.Unlock()
 	q.data = append(q.data, i)
+}
+
+func (q *Queue[K]) Remove(i K) {
+	q.mux.Lock()
+	defer q.mux.Unlock()
+
+	l := len(q.data)
+	if l < 1 {
+		return
+	}
+	for index, val := range q.data {
+		if val == i {
+			q.data[index] = q.data[l-1]
+			l--
+		}
+	}
+	q.data = q.data[:l]
 }
 
 func (q *Queue[K]) AddList(list []K) {
