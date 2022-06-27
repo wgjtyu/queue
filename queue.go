@@ -26,6 +26,9 @@ func (q *Queue[K]) Add(i K) {
 
 // Head return first element from queue
 func (q *Queue[K]) Head() (K, error) {
+	q.mux.Lock()
+	defer q.mux.Unlock()
+
 	var item K
 	if len(q.data) == 0 {
 		return item, ErrEmptyQueue
