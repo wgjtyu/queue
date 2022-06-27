@@ -26,6 +26,31 @@ func TestQueue_Add(t *testing.T) {
 	assert.Equal(t, data, all)
 }
 
+func TestQueue_Head(t *testing.T) {
+	q := NewQueue[int]()
+	q.AddList([]int{0, 1, 2})
+
+	head, err := q.Head()
+	assert.Equal(t, 0, head)
+	assert.Equal(t, nil, err)
+	assert.Equal(t, []int{1, 2}, q.data)
+
+	head, err = q.Head()
+	assert.Equal(t, 1, head)
+	assert.Equal(t, nil, err)
+	assert.Equal(t, []int{2}, q.data)
+
+	head, err = q.Head()
+	assert.Equal(t, 2, head)
+	assert.Equal(t, nil, err)
+	assert.Equal(t, []int{}, q.data)
+
+	head, err = q.Head()
+	assert.Equal(t, 0, head)
+	assert.Equal(t, ErrEmptyQueue, err)
+	assert.Equal(t, []int{}, q.data)
+}
+
 func TestQueue_Remove(t *testing.T) {
 	q := NewQueue[int]()
 	data := []int{0, 1, 2, 3, 4, 5, 3, 9, 8, 6}

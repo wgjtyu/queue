@@ -1,6 +1,11 @@
 package queue
 
-import "sync"
+import (
+	"errors"
+	"sync"
+)
+
+var ErrEmptyQueue = errors.New("queue is empty")
 
 type Queue[K comparable] struct {
 	data []K
@@ -17,6 +22,17 @@ func (q *Queue[K]) Add(i K) {
 	q.mux.Lock()
 	defer q.mux.Unlock()
 	q.data = append(q.data, i)
+}
+
+// Head return first element from queue
+func (q *Queue[K]) Head() (K, error) {
+	var item K
+	if len(q.data) == 0 {
+		return item, ErrEmptyQueue
+	}
+	item = q.data[0]
+	q.data = q.data[1:]
+	return item, nil
 }
 
 func (q *Queue[K]) Remove(i K) {
@@ -58,6 +74,7 @@ func (q *Queue[K]) Has(item K) bool {
 	}
 	return false
 }
+
 func (q *Queue[K]) Each(f func(K)) {
 	for _, item := range q.data {
 		f(item)
