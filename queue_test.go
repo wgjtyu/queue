@@ -44,6 +44,13 @@ func TestQueue_PushWithCallback(t *testing.T) {
 	assert.Equal(t, 8, cbObj.size)
 }
 
+func TestQueue_UnShiftList(t *testing.T) {
+	q := NewQueue[string]()
+	q.Add("abc0")
+	q.UnShiftList([]string{"abc1", "abc2", "abc3"})
+	assert.Equal(t, []string{"abc1", "abc2", "abc3", "abc0"}, q.PopAll())
+}
+
 func TestQueue_UnShiftListWithCallback(t *testing.T) {
 	q := NewQueue[string]()
 	q.Add("abc0")

@@ -35,6 +35,16 @@ func (q *Queue[K]) PushWithCallback(i K, cb func(K)) {
 	q.data = append(q.data, i)
 }
 
+func (q *Queue[K]) UnShiftList(itemList []K) {
+	q.mux.Lock()
+	defer q.mux.Unlock()
+
+	if len(itemList) == 0 {
+		return
+	}
+	q.data = append(itemList, q.data...)
+}
+
 func (q *Queue[K]) UnShiftListWithCallback(itemList []K, cb func(K)) {
 	q.mux.Lock()
 	defer q.mux.Unlock()
@@ -90,7 +100,7 @@ func (q *Queue[K]) PopLeftNElements(n int) []K {
 	q.mux.Lock()
 	defer q.mux.Unlock()
 
-	if n < 0 || n > len(q.data)	{
+	if n < 0 || n > len(q.data) {
 		return nil
 	}
 	res := q.data[:n]
@@ -125,7 +135,7 @@ func (q *Queue[K]) Empty() bool {
 	return len(q.data) <= 0
 }
 
-func (q *Queue[K]) FindIndex(cb func(K)bool) int {
+func (q *Queue[K]) FindIndex(cb func(K) bool) int {
 	for i, d := range q.data {
 		if cb(d) {
 			return i
