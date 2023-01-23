@@ -29,6 +29,7 @@ func TestQueue_Add(t *testing.T) {
 type _TestQueuePushWithCallback struct {
 	size int
 }
+
 func (b *_TestQueuePushWithCallback) length(s string) {
 	b.size = b.size + len(s)
 }
@@ -112,6 +113,23 @@ func TestQueue_AddList(t *testing.T) {
 
 	all := q.PopAll()
 	assert.Equal(t, all, data)
+}
+
+func TestQueue_PopLeftNElements(t *testing.T) {
+	q := NewQueue[int]()
+
+	elements := q.PopLeftNElements(0)
+	assert.Equal(t, []int{}, elements)
+
+	elements = q.PopLeftNElements(2)
+	assert.Equal(t, []int(nil), elements)
+
+	data := []int{0, 1, 2, 3, 4, 5}
+	q.AddList(data)
+
+	elements = q.PopLeftNElements(2)
+	assert.Equal(t, []int{0, 1}, elements)
+	assert.Equal(t, []int{2, 3, 4, 5}, q.data)
 }
 
 func TestQueue_PopAll(t *testing.T) {

@@ -85,6 +85,19 @@ func (q *Queue[K]) AddList(list []K) {
 	q.data = append(q.data, list...)
 }
 
+// PopLeftNElements return first N items from queue
+func (q *Queue[K]) PopLeftNElements(n int) []K {
+	q.mux.Lock()
+	defer q.mux.Unlock()
+
+	if n < 0 || n > len(q.data)	{
+		return nil
+	}
+	res := q.data[:n]
+	q.data = q.data[n:]
+	return res
+}
+
 func (q *Queue[K]) PopAll() []K {
 	q.mux.Lock()
 	defer q.mux.Unlock()
