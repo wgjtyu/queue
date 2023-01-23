@@ -18,9 +18,20 @@ func NewQueue[K comparable]() *Queue[K] {
 	}
 }
 
+// Add an element to the tail of queue
 func (q *Queue[K]) Add(i K) {
 	q.mux.Lock()
 	defer q.mux.Unlock()
+	q.data = append(q.data, i)
+}
+
+func (q *Queue[K]) PushWithCallback(i K, cb func(K)) {
+	q.mux.Lock()
+	defer q.mux.Unlock()
+
+	if cb != nil {
+		cb(i)
+	}
 	q.data = append(q.data, i)
 }
 

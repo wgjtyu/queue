@@ -26,6 +26,23 @@ func TestQueue_Add(t *testing.T) {
 	assert.Equal(t, data, all)
 }
 
+type _TestQueuePushWithCallback struct {
+	size int
+}
+func (b *_TestQueuePushWithCallback) length(s string) {
+	b.size = b.size + len(s)
+}
+
+func TestQueue_PushWithCallback(t *testing.T) {
+	q := NewQueue[string]()
+	cbObj := &_TestQueuePushWithCallback{}
+	q.PushWithCallback("abc0", cbObj.length)
+	assert.Equal(t, 4, cbObj.size)
+
+	q.PushWithCallback("abc0", cbObj.length)
+	assert.Equal(t, 8, cbObj.size)
+}
+
 func TestQueue_Head(t *testing.T) {
 	q := NewQueue[int]()
 	q.AddList([]int{0, 1, 2})
