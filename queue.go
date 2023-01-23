@@ -111,3 +111,12 @@ func (q *Queue[K]) Each(f func(K)) {
 func (q *Queue[K]) Empty() bool {
 	return len(q.data) <= 0
 }
+
+func (q *Queue[K]) FindIndex(cb func(K)bool) int {
+	for i, d := range q.data {
+		if cb(d) {
+			return i
+		}
+	}
+	return -1
+}

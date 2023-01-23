@@ -150,3 +150,19 @@ func TestQueue_Empty(t *testing.T) {
 	q.Add(true)
 	assert.Equal(t, false, q.Empty())
 }
+
+func findIndexCb(s string) bool {
+	if s == "abc" {
+		return true
+	}
+	return false
+}
+
+func TestQueue_FindIndex(t *testing.T) {
+	q := NewQueue[string]()
+	assert.Equal(t, -1, q.FindIndex(findIndexCb))
+	q.AddList([]string{"1", "2", "3"})
+	assert.Equal(t, -1, q.FindIndex(findIndexCb))
+	q.AddList([]string{"4", "5", "abc", "7"})
+	assert.Equal(t, 5, q.FindIndex(findIndexCb))
+}
