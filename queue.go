@@ -35,6 +35,19 @@ func (q *Queue[K]) PushWithCallback(i K, cb func(K)) {
 	q.data = append(q.data, i)
 }
 
+func (q *Queue[K]) UnShiftListWithCallback(itemList []K, cb func(K)) {
+	q.mux.Lock()
+	defer q.mux.Unlock()
+
+	if len(itemList) == 0 {
+		return
+	}
+	for _, m := range itemList {
+		cb(m)
+	}
+	q.data = append(itemList, q.data...)
+}
+
 // Head return first element from queue
 func (q *Queue[K]) Head() (K, error) {
 	q.mux.Lock()
