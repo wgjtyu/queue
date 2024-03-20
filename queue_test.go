@@ -191,3 +191,12 @@ func TestQueue_FindIndex(t *testing.T) {
 	q.AddList([]string{"4", "5", "abc", "7"})
 	assert.Equal(t, 5, q.FindIndex(findIndexCb))
 }
+
+func TestQueue_Count(t *testing.T) {
+	q := NewQueue[string]()
+	assert.Equal(t, 0, q.Count())
+	q.AddList([]string{"1", "2", "3"})
+	assert.Equal(t, 3, q.Count())
+	q.AddList([]string{"4", "5", "abc", "7"})
+	assert.Equal(t, 7, q.Count())
+}

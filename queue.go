@@ -143,3 +143,7 @@ func (q *Queue[K]) FindIndex(cb func(K) bool) int {
 	}
 	return -1
 }
+
+func (q *Queue[K]) Count() int {
+	return len(q.data)
+}
